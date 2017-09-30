@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Purchasing;
 
 public class GameController : MonoBehaviour
 {
@@ -101,21 +102,28 @@ public class GameController : MonoBehaviour
 
         if (DataController.Instance.PeerageCount > 17)
         {
-            StartCoroutine("MaxPeerageTextDelete");
+            DialogDataAlert alert = new DialogDataAlert("최대 품계", "최대 품계에 도달 하였습니다!", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
 
         //재화 체크
         if (DataController.Instance.Silver < DataController.Instance.PeerageCost1[DataController.Instance.PeerageCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("은화 부족", "품계 획득에 필요한 은화가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         else if (DataController.Instance.Contributiveness < DataController.Instance.PeerageCost2[DataController.Instance.PeerageCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("공헌도 부족", "품계 획득에 필요한 공헌도가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         else if (DataController.Instance.PublicSentiment < DataController.Instance.PeerageCost3[DataController.Instance.PeerageCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("민심 부족", "품계 획득에 필요한 민심이 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         //재화 체크
@@ -125,6 +133,8 @@ public class GameController : MonoBehaviour
         {
             if (DataController.Instance.PeerageCount != DataController.Instance.PublicOfficeCount)
             {
+                DialogDataAlert alert = new DialogDataAlert("낮은 관직", "다음 품계로 올라갈 수 없습니다.", delegate () { });
+                DialogManager.Instance.Push(alert);
                 return;
             }
         }
@@ -133,6 +143,8 @@ public class GameController : MonoBehaviour
         {
             if(DataController.Instance.PeerageCount+ DataController.Instance.PeerageUpgragdeCheck != DataController.Instance.PublicOfficeCount)
             {
+                DialogDataAlert alert = new DialogDataAlert("낮은 관직", "다음 품계로 올라갈 수 없습니다.", delegate () { });
+                DialogManager.Instance.Push(alert);
                 return;
             }
             else
@@ -161,34 +173,34 @@ public class GameController : MonoBehaviour
             DataController.Instance.PeerageCostText3[DataController.Instance.PeerageCount]);
         TextUpgradePeerage.text = upgradeText;
     }
-    //최대 품계 텍스트
-    IEnumerator MaxPeerageTextDelete()
-    {
-        MaxPeerageText.text = "최대 품계에 도달했습니다!";
-        yield return new WaitForSeconds(3);
-        MaxPeerageText.text = "";
-    }
 
     //문반계열 관직
     public void UpgradePublicOffice1()
     {
         if (DataController.Instance.PublicOfficeCount > 30)
         {
-            StartCoroutine("MaxPublicOfficeTextDelete");
+            DialogDataAlert alert = new DialogDataAlert("최대 관직", "최대 관직에 도달 하였습니다!", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
 
         //재화 체크 시작
         if (DataController.Instance.Silver < DataController.Instance.PublicOffice1Cost1[DataController.Instance.PublicOfficeCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("은화 부족", "관직 획득에 필요한 은화가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         else if (DataController.Instance.Contributiveness < DataController.Instance.PublicOffice1Cost2[DataController.Instance.PublicOfficeCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("공헌도 부족", "관직 획득에 필요한 공헌도가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         else if (DataController.Instance.PublicSentiment < DataController.Instance.PublicOffice1Cost3[DataController.Instance.PublicOfficeCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("민심 부족", "관직 획득에 필요한 민심이 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         //재화 체크끝
@@ -199,6 +211,8 @@ public class GameController : MonoBehaviour
         {
             if (DataController.Instance.PublicOfficeCount + 1 != DataController.Instance.PeerageCount)
             {
+                DialogDataAlert alert = new DialogDataAlert("낮은 품계", "다음 관직으로 올라갈 수 없습니다.", delegate () { });
+                DialogManager.Instance.Push(alert);
                 return;
             }
         }
@@ -209,6 +223,8 @@ public class GameController : MonoBehaviour
             {
                 if(!DataController.Instance.PeerageCountCheck)
                 {
+                    DialogDataAlert alert = new DialogDataAlert("낮은 품계", "다음 관직으로 올라갈 수 없습니다.", delegate () { });
+                    DialogManager.Instance.Push(alert);
                     return;
                 }
                 else
@@ -223,6 +239,8 @@ public class GameController : MonoBehaviour
    
         if (DataController.Instance.PublicOfficeCheck2)
         {
+            DialogDataAlert alert = new DialogDataAlert("다른 관직", "이미 다른 계열의 관직을 얻으셨습니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         DataController.Instance.PublicOfficeCheck1 = true;
@@ -252,21 +270,28 @@ public class GameController : MonoBehaviour
     {
         if (DataController.Instance.PublicOfficeCount > 30)
         {
-            StartCoroutine("MaxPublicOfficeTextDelete");
+            DialogDataAlert alert = new DialogDataAlert("최대 관직", "최대 관직에 도달 하였습니다!", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
 
         //재화 체크 시작
         if (DataController.Instance.Silver < DataController.Instance.PublicOffice2Cost1[DataController.Instance.PublicOfficeCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("은화 부족", "관직 획득에 필요한 은화가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         else if (DataController.Instance.Contributiveness < DataController.Instance.PublicOffice2Cost2[DataController.Instance.PublicOfficeCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("공헌도 부족", "관직 획득에 필요한 공헌도가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         else if (DataController.Instance.PublicSentiment < DataController.Instance.PublicOffice2Cost3[DataController.Instance.PublicOfficeCount])
         {
+            DialogDataAlert alert = new DialogDataAlert("민심 부족", "관직 획득에 필요한 민심이 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         //재화 체크 끝
@@ -276,6 +301,8 @@ public class GameController : MonoBehaviour
         {
             if (DataController.Instance.PublicOfficeCount + 1 != DataController.Instance.PeerageCount)
             {
+                DialogDataAlert alert = new DialogDataAlert("낮은 품계", "다음 관직으로 올라갈 수 없습니다.", delegate () { });
+                DialogManager.Instance.Push(alert);
                 return;
             }
         }
@@ -286,6 +313,8 @@ public class GameController : MonoBehaviour
             {
                 if (!DataController.Instance.PeerageCountCheck)
                 {
+                    DialogDataAlert alert = new DialogDataAlert("낮은 품계", "다음 관직으로 올라갈 수 없습니다.", delegate () { });
+                    DialogManager.Instance.Push(alert);
                     return;
                 }
                 else
@@ -300,6 +329,8 @@ public class GameController : MonoBehaviour
 
         if (DataController.Instance.PublicOfficeCheck1)
         {
+            DialogDataAlert alert = new DialogDataAlert("다른 관직", "이미 다른 계열의 관직을 얻으셨습니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
         DataController.Instance.PublicOfficeCheck2 = true;
@@ -323,13 +354,6 @@ public class GameController : MonoBehaviour
             DataController.Instance.PublicOffice2CostText3[DataController.Instance.PublicOfficeCount]);
         TextUpgradePublicOffice2.text = upgradeText;
     }
-    //최대 관직 텍스트 표시후 삭제
-    IEnumerator MaxPublicOfficeTextDelete()
-    {
-        MaxPublicOfficeText.text = "최대 관직에 도달했습니다!";
-        yield return new WaitForSeconds(3);
-        MaxPublicOfficeText.text = "";
-    }
 
     //은화 수집량 증가
     public void UpgradeCollectSilver()
@@ -339,6 +363,8 @@ public class GameController : MonoBehaviour
 
         if (DataController.Instance.Silver < Cost)
         {
+            DialogDataAlert alert = new DialogDataAlert("은화 부족", "필요한 은화가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
 
@@ -360,6 +386,8 @@ public class GameController : MonoBehaviour
 
         if (DataController.Instance.Silver < Cost)
         {
+            DialogDataAlert alert = new DialogDataAlert("은화 부족", "필요한 은화가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
 
@@ -382,6 +410,8 @@ public class GameController : MonoBehaviour
 
         if (DataController.Instance.Silver < Cost)
         {
+            DialogDataAlert alert = new DialogDataAlert("은화 부족", "필요한 은화가 부족합니다.", delegate () { });
+            DialogManager.Instance.Push(alert);
             return;
         }
 
@@ -394,5 +424,16 @@ public class GameController : MonoBehaviour
         Cost = DataController.Instance.CollectPublicSentimentLevel * DataController.Instance.CollectPublicSentimentLevel * 5;
         String upgradeText = String.Format("민심 증가\n가격 : {0} 전", Cost);
         TextUpgradeCollectPublicSentiment.text = upgradeText;
+    }
+
+    //인앱 결제
+    public void PurchaseComplete(Product p)
+    {
+        Debug.Log(p.metadata.localizedTitle + " purchase success!");
+        DataController.Instance.Silver += 100000;
+        DataController.Instance.SaveGameData();
+        TextSilver.text = DataController.Instance.Silver.ToString();
+        TextPublicSentiment.text = DataController.Instance.PublicSentiment.ToString();
+        TextContributiveness.text = DataController.Instance.Contributiveness.ToString();
     }
 }

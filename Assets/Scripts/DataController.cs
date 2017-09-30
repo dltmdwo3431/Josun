@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class DataController : MonoBehaviour {
 
@@ -26,9 +27,77 @@ public class DataController : MonoBehaviour {
 			return _instance;
 		}
 	}
-	// Singleton class end
+    // Singleton class end
 
-	public int Silver = 0;
+    public string gameDataProjectFilePath = "/game.json";
+
+    GameData _gameData;
+    public GameData gameData
+    {
+        get
+        {
+            if (_gameData == null)
+            {
+                LoadGameData();
+            }
+            return _gameData;
+        }
+    }
+
+    MetaData _metaData;
+    public MetaData metaData
+    {
+        get
+        {
+            if (_metaData == null)
+            {
+                LoadMetaData();
+            }
+            return _metaData;
+        }
+    }
+
+    public void LoadMetaData()
+    {
+        TextAsset statJson = Resources.Load("MetaData/Meta") as TextAsset;
+        Debug.Log(statJson.text);
+        _metaData = JsonUtility.FromJson<MetaData>(statJson.text);
+    }
+
+    public void LoadGameData()
+    {
+        string filePath = Application.persistentDataPath + gameDataProjectFilePath;
+
+        if (File.Exists(filePath))
+        {
+            Debug.Log("loaded!");
+            string dataAsJson = File.ReadAllText(filePath);
+            _gameData = JsonUtility.FromJson<GameData>(dataAsJson);
+        }
+        else
+        {
+            Debug.Log("Create new");
+
+            _gameData = new GameData();
+            _gameData.CollectSilverLevel = 1;
+            _gameData.SilverPerSec = 1;
+            _gameData.Silver = 0;
+            _gameData.Contributiveness = 0;
+            _gameData.PublicSentiment = 0;
+        }
+    }
+
+    public void SaveGameData()
+    {
+
+        string dataAsJson = JsonUtility.ToJson(gameData);
+
+        string filePath = Application.persistentDataPath + gameDataProjectFilePath;
+        File.WriteAllText(filePath, dataAsJson);
+
+    }
+
+    public int Silver = 0;
     public int Contributiveness = 0;
     public int PublicSentiment = 0;
 
@@ -63,7 +132,7 @@ public class DataController : MonoBehaviour {
     public int[] PeerageCost3 = 
         { 1, 3, 5, 7, 10, 30, 50, 70, 100, 300, 500, 700, 1000, 3000, 5000, 7000, 10000, 50000, 0 };
     public string[] PeerageCostText1 = 
-        { "100", "500", "1000", "5000", "10000", "50000", "100,000", "500,000","1000,000","5000,000","10,000,000","35,000,000","75,000,000","100,000,000","300,000,000","500,000,000","700,000,000","1,000,000,000", "최대 작위",};
+        { "100", "500", "1000", "5000", "10000", "50000", "100,000", "500,000","1,000,000","5,000,000","10,000,000","35,000,000","75,000,000","100,000,000","300,000,000","500,000,000","700,000,000","1,000,000,000", "최대 작위",};
     public string[] PeerageCostText2 =
         { "1", "3", "5", "7", "10", "30", "50", "70","100","300","500","700","1,000","3,000","5,000","7,000","10,000","50,000", "최대 작위",};
     public string[] PeerageCostText3 =
@@ -76,7 +145,7 @@ public class DataController : MonoBehaviour {
         { 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 6000, 7000, 8000, 9000, 10000, 20000, 30000, 40000, 50000, 0 };
     public int[] PublicOffice1Cost3 = 
         { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1300, 1600, 2000, 500000, 0 };
-    public string[] PublicOffice1CostText1 = 
+    public string[] PublicOffice1CostText1 =
         { "100", "300", "500", "700", "1,000", "3,000", "5,000", "7,000", "10,000", "15,000", "35,000", "55,000", "77,000", "100,000", "150,000", "450,000", "700,000", "990,000", "1,250,000", "1,500,000", "1,750,000", "3,000,000", "5,000,000", "7,000,000", "10,000,000", "13,000,000", "16,000,000", "20,000,000", "25,000,000", "30,000,000", "50,000,000", "100,000,000", "최대 관직" };
     public string[] PublicOffice1CostText2 = 
         { "1", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1,000", "2,000", "3,000", "5,000", "6,000", "7,000", "8,000", "9,000", "1,0000", "20,000", "30,000", "40,000", "50,000", "최대 관직" };
@@ -91,7 +160,7 @@ public class DataController : MonoBehaviour {
     public int[] PublicOffice2Cost3 = 
         { 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 6000, 7000, 8000, 9000, 10000, 20000, 30000, 40000, 500000, 0 };
     public string[] PublicOffice2CostText1 = 
-        { "100", "300", "500", "700", "1000", "3000", "5000", "7000", "10000", "15000", "35000", "55000", "77000", "100000", "150000", "450000", "700000", "990000", "1250000", "1500000", "1750000", "3000000", "5000000", "7000000", "10000000", "13000000", "16000000", "20000000", "25000000", "30000000", "50000000", "100000000", "최대 관직" };
+        { "100", "300", "500", "700", "1,000", "3,000", "5,000", "7,000", "10,000", "15,000", "35,000", "55,000", "77,000", "100,000", "150,000", "450,000", "700,000", "990,000", "1,250,000", "1,500,000", "1,750,000", "3,000,000", "5,000,000", "7,000,000", "10,000,000", "13,000,000", "16,000,000", "20,000,000", "25,000,000", "30,000,000", "50,000,000", "100,000,000", "최대 관직" };
     public string[] PublicOffice2CostText2 =
         { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1,000", "1,300", "1,600", "2,000", "500,000", "최대 관직" };
     public string[] PublicOffice2CostText3 =
